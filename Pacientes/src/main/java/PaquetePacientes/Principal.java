@@ -530,7 +530,8 @@ public class Principal extends javax.swing.JFrame {
                     // Deleting the temporary file
                     tmpFile.delete();
 
-                    System.out.println(" Friend updated. ");
+                    //System.out.println(" Friend updated. ");
+                    JOptionPane.showMessageDialog(null, "Paciente actualizado");
                 }
 
                 // The contact to be updated
@@ -541,17 +542,19 @@ public class Principal extends javax.swing.JFrame {
                     raf.close();
 
                     // Print the message
-                    System.out.println(" Input name"
-                                       + " does not exists. ");
+                    //System.out.println(" Input name" + " does not exists. ");
+                    JOptionPane.showMessageDialog(null, "El paciente "+newName+" no existe");
                 }
             }
 
             catch (IOException ioe) {
-                System.out.println(ioe);
+                //System.out.println(ioe);
+                JOptionPane.showMessageDialog(null, "Error "+ioe);
             }
 
             catch (NumberFormatException nef) {
-                System.out.println(nef);
+                //System.out.println(nef);
+                JOptionPane.showMessageDialog(null, "Error "+nef);
             }
 
 
