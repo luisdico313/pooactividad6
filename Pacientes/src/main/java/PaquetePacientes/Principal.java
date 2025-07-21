@@ -87,16 +87,14 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnCreate)
-                                    .addComponent(btnUpdate))
-                                .addGap(29, 29, 29)
-                                .addComponent(btnDelete))
+                            .addComponent(btnCreate)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(101, 101, 101)
                                 .addComponent(btnRead)))
-                        .addGap(0, 198, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                        .addComponent(btnUpdate)
+                        .addGap(25, 25, 25)
+                        .addComponent(btnDelete))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbNumero)
@@ -121,12 +119,10 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCreate)
-                    .addComponent(btnRead))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDelete)
-                    .addComponent(btnUpdate))
-                .addGap(47, 47, 47))
+                    .addComponent(btnRead)
+                    .addComponent(btnUpdate)
+                    .addComponent(btnDelete))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         pack();
@@ -208,16 +204,90 @@ public class Principal extends javax.swing.JFrame {
         }
         
         catch (IOException ioe){
-                System.out.println(ioe);
+                //System.out.println(ioe);
+                JOptionPane.showMessageDialog(null, "Error");
+                txtNombre.setText("");
+                txtNumero.setText("");
+                
                 }
         
         catch (NumberFormatException nef){
-                System.out.println(nef);
+                //System.out.println(nef);
+                JOptionPane.showMessageDialog(null, "Error");
+                txtNombre.setText("");
+                txtNumero.setText("");
                 }       
     }//GEN-LAST:event_btnCreateActionPerformed
 
     private void btnReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReadActionPerformed
-        // TODO add your handling code here:
+        try{
+            
+            String nameNumberString;
+            String name;
+            String newName = String.valueOf(txtNombre.getText());
+            
+            long number;
+            int index;
+            
+            File file = new File("C:\\Users\\Usuario\\Documents\\GitHub\\pooactividad6\\files\\Pacientes.txt");
+            
+            if(!file.exists()){
+                //Crea el archivo si no existe
+                file.createNewFile();
+            }
+            //Se abre el archivo en modo de Lectura y Escritura
+            
+            RandomAccessFile raf = new RandomAccessFile(file,"rw");
+            boolean found = false;
+            
+            while(raf.getFilePointer() < raf.length()){
+                //leyendo lína desde el archivo
+                nameNumberString = raf.readLine();
+                
+                String[] lineSplit = nameNumberString.split("!");
+                
+                //Se separan las columnas
+                name = lineSplit[0];
+                number = Long.parseLong(lineSplit[1]);
+                
+                if(name.equals(newName)){
+                    
+                    txtNombre.setText(String.valueOf(name));
+                    txtNumero.setText(String.valueOf(number));
+                    
+                    raf.close();
+                        found = true;
+                    
+                }
+                
+                
+                
+                
+                
+            }
+            
+            if(found == false){
+                raf.close();
+                txtNombre.setText("");
+                txtNumero.setText("");
+                JOptionPane.showMessageDialog(null, "El contacto no existe");
+                    
+            }
+                
+            
+            
+            
+        }
+        catch(IOException ioe){
+            //System.out.println(ioe);
+            JOptionPane.showMessageDialog(null, "Error");
+        }
+        
+        catch(NumberFormatException nef){
+            //System.out.println(nef);
+            JOptionPane.showMessageDialog(null, "Error");
+        }
+            // TODO add your handling code here:
     }//GEN-LAST:event_btnReadActionPerformed
 
     /**
