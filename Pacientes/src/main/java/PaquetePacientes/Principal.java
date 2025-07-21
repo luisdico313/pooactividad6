@@ -77,6 +77,11 @@ public class Principal extends javax.swing.JFrame {
         });
 
         btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -289,6 +294,110 @@ public class Principal extends javax.swing.JFrame {
         }
             // TODO add your handling code here:
     }//GEN-LAST:event_btnReadActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+             // TODO add your handling code here:
+        
+        try{
+            String newName = txtNombre.getText();
+            long newNumber = Long.parseLong(txtNumero.getText());
+            
+            String nameNumberString;
+            String name;
+            int index;
+            long number;
+            
+            File file = new File("C:\\Users\\Usuario\\Documents\\GitHub\\pooactividad6\\files\\Pacientes.txt");
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            
+            RandomAccessFile raf = new RandomAccessFile(file,"rw");
+            boolean found = false;
+            
+            while (raf.getFilePointer() < raf.length()){
+                nameNumberString = raf.readLine();
+                String[] lineSplit = nameNumberString.split("!");
+                name = lineSplit[0];
+                number = Long.parseLong(lineSplit[1]);
+                
+                if(name.equals(newName) && number == newNumber){
+                    found = true;
+                    break;
+                }
+            }
+            
+            if(found == true){
+                //Se utiliza un archivo temporal
+                File tmpFile = new File("temp.txt");
+                
+                //Tal archivo se abre en modo lectura y escritura
+                RandomAccessFile tmpraf = new RandomAccessFile(tmpFile,"rw");
+                
+                // Se inicia el apuntador para comenzar
+                raf.seek(0);
+                
+                while(raf.getFilePointer()<raf.length()){
+                    nameNumberString = raf.readLine();
+                    
+                    String[] lineSplit2 = nameNumberString.split("!");
+                    
+                    name = lineSplit2[0];
+                    number = Long.parseLong(lineSplit2[1]);
+                    
+                    if(name.equals(newName)&&number==newNumber){
+                        continue;
+                    }
+                    
+                    tmpraf.writeBytes(nameNumberString);
+                    tmpraf.writeBytes(System.lineSeparator());
+                }
+                raf.seek(0);
+                tmpraf.seek(0);
+                
+                while(tmpraf.getFilePointer()<tmpraf.length()){
+                    raf.writeBytes(tmpraf.readLine());
+                    raf.writeBytes(System.lineSeparator());
+                }
+                raf.setLength(tmpraf.length());
+                
+                tmpraf.close();
+                raf.close();
+                
+                tmpFile.delete();
+                JOptionPane.showMessageDialog(null,"Paciente eliminado",
+                        "INFORMATION_MESSAGE",JOptionPane.INFORMATION_MESSAGE);
+                txtNombre.setText("");
+                txtNumero.setText("");
+                
+                
+            }
+            
+            else{
+                raf.close();
+                
+                JOptionPane.showMessageDialog(null,"El paciente no existe",
+                        "INFORMATION_MESSAGE",JOptionPane.INFORMATION_MESSAGE);
+                
+            }
+            
+            
+            
+            
+            
+            
+        }
+        catch(IOException ioe){
+            System.out.println(ioe);
+            
+        }
+             
+        catch(NumberFormatException nef){
+            System.out.println(nef);
+        }
+             
+             
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments
