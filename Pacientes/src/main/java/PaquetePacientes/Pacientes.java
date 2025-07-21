@@ -11,6 +11,7 @@ package PaquetePacientes;
 public class Pacientes {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Principal formulario = new Principal();
+        formulario.setVisible(true);
     }
 }

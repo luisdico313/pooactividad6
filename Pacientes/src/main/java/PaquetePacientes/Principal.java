@@ -2,7 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+
+
 package PaquetePacientes;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,21 +33,192 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lbNombre = new javax.swing.JLabel();
+        lbNumero = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        txtNumero = new javax.swing.JTextField();
+        btnCreate = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        btnRead = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lbNombre.setText("Nombre:");
+
+        lbNumero.setText("Número:");
+
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreActionPerformed(evt);
+            }
+        });
+
+        txtNumero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNumeroActionPerformed(evt);
+            }
+        });
+
+        btnCreate.setText("Create");
+        btnCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateActionPerformed(evt);
+            }
+        });
+
+        btnUpdate.setText("Update");
+
+        btnRead.setText("Read");
+        btnRead.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReadActionPerformed(evt);
+            }
+        });
+
+        btnDelete.setText("Delete");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnCreate)
+                                    .addComponent(btnUpdate))
+                                .addGap(29, 29, 29)
+                                .addComponent(btnDelete))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(101, 101, 101)
+                                .addComponent(btnRead)))
+                        .addGap(0, 198, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbNumero)
+                            .addComponent(lbNombre))
+                        .addGap(54, 54, 54)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNombre)
+                            .addComponent(txtNumero))))
+                .addGap(53, 53, 53))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbNombre)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbNumero)
+                    .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCreate)
+                    .addComponent(btnRead))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDelete)
+                    .addComponent(btnUpdate))
+                .addGap(47, 47, 47))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
+
+    private void txtNumeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumeroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNumeroActionPerformed
+
+    private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
+        // TODO add your handling code here:
+        
+        try{
+            String newName = String.valueOf(txtNombre.getText());
+            
+            long newNumber = Long.parseLong(txtNumero.getText());
+            
+            String nameNumberString;
+            String name;
+            long number;
+            int index;
+            
+            File file = new File("C:\\Users\\Usuario\\Documents\\GitHub\\pooactividad6\\files\\Pacientes.txt");
+            
+            if(file.exists() == false){
+                file.createNewFile();
+            }
+            
+            RandomAccessFile raf = new RandomAccessFile(file,"rw");
+            boolean found = false;
+            
+            // Si el paciente existe
+            while (raf.getFilePointer() < raf.length()){
+                nameNumberString = raf.readLine();
+                
+                String[] lineSplit = nameNumberString.split("!");
+                
+                name = lineSplit[0];
+                number = Long.parseLong(lineSplit[1]);
+                
+                if(name.equals(newName)||number==newNumber){
+                    found = true;
+                    break;                    
+                }
+            }// Termina si el paciente existe
+            
+            if (found == false){
+                
+                //Ingresar al bloque If cuando un registro no está presente en el archivo
+                nameNumberString = newName + "!" + String.valueOf(newNumber);
+                
+                // Para escribir un String como una secuencia de bytes
+                raf.writeBytes(nameNumberString);
+                
+                // Para insertar el siguiente registro en una nueva línea
+                raf.writeBytes(System.lineSeparator());
+                
+                // Imprimir mensaje
+                // System.out.println(" Paciente agregado. ");
+                JOptionPane.showMessageDialog(null, " Paciente agregado. ");
+                // Cerrando los recursos
+                raf.close();
+                
+            }
+            // El contacto para ser actualizado podría no haber sido encontrado
+            else{
+                //Cerrando los recursos
+                raf.close();
+                
+                //System.out.println(" El paciente ya existe. ");
+                JOptionPane.showMessageDialog(null, "El paciente ya existe");
+            }
+        
+            
+        }
+        
+        catch (IOException ioe){
+                System.out.println(ioe);
+                }
+        
+        catch (NumberFormatException nef){
+                System.out.println(nef);
+                }       
+    }//GEN-LAST:event_btnCreateActionPerformed
+
+    private void btnReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReadActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +256,13 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCreate;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnRead;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JLabel lbNombre;
+    private javax.swing.JLabel lbNumero;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtNumero;
     // End of variables declaration//GEN-END:variables
 }
