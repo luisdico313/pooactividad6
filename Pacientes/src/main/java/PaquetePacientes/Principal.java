@@ -392,7 +392,7 @@ public class Principal extends javax.swing.JFrame {
                         "INFORMATION_MESSAGE",JOptionPane.INFORMATION_MESSAGE);
                 
             }
-            
+   
             
             
             
