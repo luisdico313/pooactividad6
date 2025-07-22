@@ -1,7 +1,4 @@
-Carolina!3
-Milena!39
-Santiago!2
-Carmen!300
-Carlos!70
-Leidis!80
-Camila!30
+Luis!20
+Deiber!75
+Manuel!90
+Patricia!150
