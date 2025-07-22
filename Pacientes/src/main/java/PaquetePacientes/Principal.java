@@ -41,12 +41,13 @@ public class Principal extends javax.swing.JFrame {
         btnUpdate = new javax.swing.JButton();
         btnRead = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        btnTotal = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         lbNombre.setText("Paciente:");
 
-        lbNumero.setText("Número:");
+        lbNumero.setText("Cuenta por pagar:");
 
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,6 +89,13 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        btnTotal.setText("Total cobro a pacientes");
+        btnTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTotalActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -114,6 +122,10 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(txtNombre)
                             .addComponent(txtNumero))))
                 .addGap(53, 53, 53))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(153, 153, 153)
+                .addComponent(btnTotal)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,7 +144,9 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(btnRead)
                     .addComponent(btnUpdate)
                     .addComponent(btnDelete))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addComponent(btnTotal)
+                .addGap(29, 29, 29))
         );
 
         pack();
@@ -157,7 +171,6 @@ public class Principal extends javax.swing.JFrame {
             String nameNumberString;
             String name;
             long number;
-            int index;
             
             File file = new File("C:\\Users\\Usuario\\Documents\\GitHub\\pooactividad6\\files\\Pacientes.txt");
             
@@ -237,7 +250,7 @@ public class Principal extends javax.swing.JFrame {
             String newName = String.valueOf(txtNombre.getText());
             
             long number;
-            int index;
+            //int index;
             
             File file = new File("C:\\Users\\Usuario\\Documents\\GitHub\\pooactividad6\\files\\Pacientes.txt");
             
@@ -269,18 +282,13 @@ public class Principal extends javax.swing.JFrame {
                         found = true;
                     
                 }
-                
-                
-                
-                
-                
             }
             
             if(found == false){
                 raf.close();
                 txtNombre.setText("");
                 txtNumero.setText("");
-                JOptionPane.showMessageDialog(null, "El contacto no existe");
+                JOptionPane.showMessageDialog(null, "El paciente no existe");
                     
             }
                 
@@ -288,6 +296,7 @@ public class Principal extends javax.swing.JFrame {
             
             
         }
+        
         catch(IOException ioe){
             //System.out.println(ioe);
             JOptionPane.showMessageDialog(null, "Error");
@@ -374,8 +383,6 @@ public class Principal extends javax.swing.JFrame {
                         "INFORMATION_MESSAGE",JOptionPane.INFORMATION_MESSAGE);
                 txtNombre.setText("");
                 txtNumero.setText("");
-                
-                
             }
             
             else{
@@ -547,6 +554,7 @@ public class Principal extends javax.swing.JFrame {
                 }
             }
 
+            
             catch (IOException ioe) {
                 //System.out.println(ioe);
                 JOptionPane.showMessageDialog(null, "Error "+ioe);
@@ -561,6 +569,72 @@ public class Principal extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTotalActionPerformed
+        // TODO add your handling code here:
+            
+        
+        try{
+                String nameNumberString;
+                String name;
+                long number;
+                int index;
+                float total;
+                
+                total = 0;
+               
+                File file = new File("C:\\Users\\Usuario\\Documents\\GitHub\\pooactividad6\\files\\Pacientes.txt");
+
+                if (!file.exists()) {
+
+                    // Create a new file if not exists.
+                    file.createNewFile();
+                }
+
+                // Opening file in reading and write mode.
+                RandomAccessFile raf = new RandomAccessFile(file, "rw");
+                boolean found = false;
+
+                // Checking whether the name
+                // of contact already exists.
+                // getFilePointer() give the current offset
+                // value from start of the file.
+                while (raf.getFilePointer() < raf.length()) {
+
+                    // reading line from the file.
+                    nameNumberString = raf.readLine();
+
+                    // splitting the string to get name and
+                    // number
+                    String[] lineSplit = nameNumberString.split("!");
+
+                    // separating name and number.
+                    name = lineSplit[0];
+                    number = Long.parseLong(lineSplit[1]);
+                    
+                    total += number;
+
+                }
+                
+                JOptionPane.showMessageDialog(null, "El total a recibir es: "+total);
+            }
+            
+            
+        
+            catch (IOException ioe) {
+                //System.out.println(ioe);
+                JOptionPane.showMessageDialog(null, "Error "+ioe);
+            }
+
+            catch (NumberFormatException nef) {
+                //System.out.println(nef);
+                JOptionPane.showMessageDialog(null, "Error "+nef);
+            }
+
+        
+        
+        
+    }//GEN-LAST:event_btnTotalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -601,6 +675,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnRead;
+    private javax.swing.JButton btnTotal;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel lbNombre;
     private javax.swing.JLabel lbNumero;
